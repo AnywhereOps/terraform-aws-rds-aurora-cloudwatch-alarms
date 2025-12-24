@@ -1,35 +1,15 @@
-output "cluster_id" {
-  description = "The ID of the cluster"
-  value       = concat(aws_rds_cluster.main.*.id, [""])[0]
+output "alarm_arns" {
+  description = "ARNs of created CloudWatch alarms"
+  value = {
+    disk_queue_depth            = try(aws_cloudwatch_metric_alarm.disk_queue_depth[0].arn, null)
+    database_connections_writer = try(aws_cloudwatch_metric_alarm.database_connections_writer[0].arn, null)
+    database_connections_reader = try(aws_cloudwatch_metric_alarm.database_connections_reader[0].arn, null)
+    cpu_utilization_writer      = try(aws_cloudwatch_metric_alarm.cpu_utilization_writer[0].arn, null)
+    cpu_utilization_reader      = try(aws_cloudwatch_metric_alarm.cpu_utilization_reader[0].arn, null)
+    aurora_replica_lag          = try(aws_cloudwatch_metric_alarm.aurora_replica_lag[0].arn, null)
+    swap_usage_writer           = try(aws_cloudwatch_metric_alarm.swap_usage_writer[0].arn, null)
+    swap_usage_reader           = try(aws_cloudwatch_metric_alarm.swap_usage_reader[0].arn, null)
+    freeable_memory_writer      = try(aws_cloudwatch_metric_alarm.freeable_memory_writer[0].arn, null)
+    freeable_memory_reader      = try(aws_cloudwatch_metric_alarm.freeable_memory_reader[0].arn, null)
+  }
 }
-
-output "cluster_endpoint" {
-  description = "The cluster endpoint"
-  value       = concat(aws_rds_cluster.main.*.endpoint, [""])[0]
-}
-
-output "cluster_reader_endpoint" {
-  description = "The cluster reader endpoint"
-  value       = concat(aws_rds_cluster.main.*.reader_endpoint, [""])[0]
-}
-
-output "cluster_master_username" {
-  description = "The master username"
-  value       = concat(aws_rds_cluster.main.*.master_username, [""])[0]
-}
-
-output "cluster_master_password" {
-  description = "The master password"
-  value       = concat(aws_rds_cluster.main.*.master_password, [""])[0]
-}
-
-output "cluster_port" {
-  description = "The port"
-  value       = concat(aws_rds_cluster.main.*.port, [""])[0]
-}
-
-output "security_group_id" {
-  description = "The security group ID of the cluster"
-  value       = concat(aws_security_group.main.*.id, [""])[0]
-}
-
